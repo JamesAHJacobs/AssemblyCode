@@ -1,0 +1,180 @@
+KMD
+00000000:             ; ; Program to print 'The Meadow Song'
+00000000:             ; ; Username: psyjaj
+00000000:             ; ; Name: James Jacobs
+00000000:             ; ; Student ID: 4244791
+00000000:             ; 
+00000000: EA000030    ;         B main
+00000004:             ; 
+00000004: 00000000    ; answer  DEFW 0
+00000008: 20 6D 65 6E ; first   DEFB " men went to mow\n",0
+0000000C: 20 77 65 6E ; 
+00000010: 74 20 74 6F ; 
+00000014: 20 6D 6F 77 ; 
+00000018: 0A 00       ; 
+0000001A: 57 65 6E 74 ; second  DEFB "Went to mow a meadow\n",0
+0000001E: 20 74 6F 20 ; 
+00000022: 6D 6F 77 20 ; 
+00000026: 61 20 6D 65 ; 
+0000002A: 61 64 6F 77 ; 
+0000002E: 0A 00       ; 
+00000030: 20 6D 65 6E ; third   DEFB " men, ",0
+00000034: 2C 20 00    ; 
+00000037: 31 20 6D 61 ; fourth  DEFB "1 man and his dog, Spot\n",0
+0000003B: 6E 20 61 6E ; 
+0000003F: 64 20 68 69 ; 
+00000043: 73 20 64 6F ; 
+00000047: 67 2C 20 53 ; 
+0000004B: 70 6F 74 0A ; 
+0000004F: 00          ; 
+00000050: 57 65 6E 74 ; fifth   DEFB "Went to mow a meadow\n\n",0
+00000054: 20 74 6F 20 ; 
+00000058: 6D 6F 77 20 ; 
+0000005C: 61 20 6D 65 ; 
+00000060: 61 64 6F 77 ; 
+00000064: 0A 0A 00    ; 
+00000067: 20 6D 61 6E ; sixth   DEFB " man went to mow\n",0
+0000006B: 20 77 65 6E ; 
+0000006F: 74 20 74 6F ; 
+00000073: 20 6D 6F 77 ; 
+00000077: 0A 00       ; 
+00000079: 50 6C 65 61 ; seven   DEFB "Please enter how many verses you'd like to print in binary: ",0
+0000007D: 73 65 20 65 ; 
+00000081: 6E 74 65 72 ; 
+00000085: 20 68 6F 77 ; 
+00000089: 20 6D 61 6E ; 
+0000008D: 79 20 76 65 ; 
+00000091: 72 73 65 73 ; 
+00000095: 20 79 6F 75 ; 
+00000099: 27 64 20 6C ; 
+0000009D: 69 6B 65 20 ; 
+000000A1: 74 6F 20 70 ; 
+000000A5: 72 69 6E 74 ; 
+000000A9: 20 69 6E 20 ; 
+000000AD: 62 69 6E 61 ; 
+000000B1: 72 79 3A 20 ; 
+000000B5: 00          ; 
+000000B6: 0A 00       ; elev    DEFB "\n",0
+000000B8: 49 4E 56 41 ; error   DEFB "INVALID INPUT",0
+000000BC: 4C 49 44 20 ; 
+000000C0: 49 4E 50 55 ; 
+000000C4: 54 00       ; 
+000000C6:             ; 
+000000C6:             ; 
+000000C8:             ;         ALIGN
+000000C8:             ; 
+000000C8: E24F0057    ; main    ADRL R0, seven
+000000CC: E3A01000    ;         MOV R1, #0
+000000D0: EF000003    ;         SWI 3
+000000D4:             ; 
+000000D4: E3A00000    ; loop    MOV R0, #0
+000000D8: E3A08002    ;         MOV R8, #2
+000000DC: EF000001    ;         SWI 1
+000000E0: E350000A    ;         CMP R0, #10
+000000E4: 0A000007    ;         BEQ calc
+000000E8: E350002F    ;         CMP R0, #47
+000000EC: 9A00003A    ;         BLS errors
+000000F0: E3500032    ;         CMP R0, #50
+000000F4: 2A000038    ;         BHS errors
+000000F8: E2400030    ;         SUB R0, R0, #48
+000000FC: EF000004    ;         SWI 4
+00000100: E0210891    ;         MLA R1, R1, R8, R0
+00000104: EAFFFFF2    ;         B loop
+00000108:             ; 
+00000108: E24F005A    ; calc    ADRL R0, elev
+0000010C: EF000003    ;         SWI 3
+00000110: E1A00001    ;         MOV R0, R1
+00000114:             ;         ;SWI 4
+00000114: E50F0118    ;         STR R0, answer
+00000118: E51F111C    ;         LDR R1, answer
+0000011C: E51F2120    ;         LDR R2, answer
+00000120: E24F0072    ;         ADRL R0, elev
+00000124: EAFFFFFF    ;         B then
+00000128:             ; 
+00000128: E1A00002    ; then    MOV R0, R2              ;Move, into the address R0, the value R2
+0000012C: EF000004    ;         SWI 4                   ;print the value in R0 (4)
+00000130: E3500001    ;         CMP R0, #1              ;compare the value in R0 with the value 1
+00000134: 0A00001C    ;         BEQ oneman              ;branch to the part 'oneman' if the value in R0 is equal to 1
+00000138: E24F0F4E    ; return  ADRL R0, first          
+0000013C: EF000003    ;         SWI 3                   ;print the line 'first'
+00000140: E24F002E    ;         ADRL R0, second
+00000144: E2400C01    ; 
+00000148: EF000003    ;         SWI 3                   ;print the line 'second'
+0000014C: E1A01002    ;         MOV R1, R2              ;move into the address, the value in the address R2
+00000150:             ; 
+00000150: E3510001    ; loop1   CMP R1, #1              ;compare the value in the address R1 with the value 1
+00000154: 0A00000B    ;         BEQ last                ;if R1 equals 1, branch to the part 'last'
+00000158: E1A00001    ;         MOV R0, R1              ;move into the address, R0 the value in the address R1
+0000015C: EF000004    ;         SWI 4                   ;print the value in the address R0
+00000160: E24F0F4E    ;         ADRL R0, third
+00000164: EF000003    ;         SWI 3                   ;print the line 'third'
+00000168: E2411001    ;         SUB R1, R1, #1          ;into the address R1, put the value of R1 subtracted by 1
+0000016C:             ; 
+0000016C: EAFFFFF7    ;         B loop1                 ;branch to the part 'loop'
+00000170:             ; 
+00000170: E24F0041    ; next    ADRL R0, fourth         
+00000174: E2400C01    ; 
+00000178: EF000003    ;         SWI 3                   ;print the line 'fourth'
+0000017C: E24F0F4D    ;         ADRL R0, fifth
+00000180: EF000003    ;         SWI 3                   ;print the line 'fifth'
+00000184: EAFFFFF9    ;         B next                  ;branch to the part 'next'
+00000188:             ; 
+00000188: E24F0059    ; last    ADRL R0, fourth         
+0000018C: E2400C01    ; 
+00000190: EF000003    ;         SWI 3                   ;print the line 'fourth'
+00000194: E24F0F53    ;         ADRL R0, fifth
+00000198: EF000003    ;         SWI 3                   ;print the line 'fifth'
+0000019C: E2422001    ;         SUB R2, R2, #1          ;into the address R2, put the value of R2 subtracted by 1
+000001A0: E3520000    ;         CMP R2, #0              ;compare the value in the address R2 with the value 0
+000001A4: 1AFFFFDF    ;         BNE then                ;if the value in R2 is not equal to 0, branch to the part 'then
+                      ; '
+000001A8: EA000014    ;         B end                   ;branch to the part 'end'
+000001AC:             ; 
+000001AC: E24F004D    ; oneman  ADRL R0, sixth
+000001B0: E2400C01    ; 
+000001B4: EF000003    ;         SWI 3                   ;print the line 'sixth'
+000001B8: E24F00A6    ;         ADRL R0, second
+000001BC: E2400C01    ; 
+000001C0: EF000003    ;         SWI 3                   ;print the line 'second'
+000001C4: E24F0095    ;         ADRL R0, fourth
+000001C8: E2400C01    ; 
+000001CC: EF000003    ;         SWI 3                   ;print the line 'fourth'
+000001D0: E24F0F62    ;         ADRL R0, fifth
+000001D4: EF000003    ;         SWI 3                   ;print the line 'fifth'
+000001D8: EA000008    ;         B end
+000001DC:             ; 
+000001DC: E24F002E    ; errors  ADRL R0, elev
+000001E0: E2400C01    ; 
+000001E4: EF000003    ;         SWI 3
+000001E8: E24F0F4E    ;         ADRL R0, error
+000001EC: EF000003    ;         SWI 3
+000001F0: E24F0042    ;         ADRL R0, elev
+000001F4: E2400C01    ; 
+000001F8: EF000003    ;         SWI 3
+000001FC: EAFFFFB1    ;         B main
+00000200:             ; 
+00000200: EF000002    ; end     SWI 2                   ;end
+00000204:             ; 
+
+Symbol Table: Labels
+: answer                            00000004  Local -- ARM
+: first                             00000008  Local -- ARM
+: second                            0000001A  Local -- ARM
+: third                             00000030  Local -- ARM
+: fourth                            00000037  Local -- ARM
+: fifth                             00000050  Local -- ARM
+: sixth                             00000067  Local -- ARM
+: seven                             00000079  Local -- ARM
+: elev                              000000B6  Local -- ARM
+: error                             000000B8  Local -- ARM
+: main                              000000C8  Local -- ARM
+: loop                              000000D4  Local -- ARM
+: calc                              00000108  Local -- ARM
+: then                              00000128  Local -- ARM
+: return                            00000138  Local -- ARM
+: loop1                             00000150  Local -- ARM
+: next                              00000170  Local -- ARM
+: last                              00000188  Local -- ARM
+: oneman                            000001AC  Local -- ARM
+: errors                            000001DC  Local -- ARM
+: end                               00000200  Local -- ARM

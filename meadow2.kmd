@@ -1,0 +1,113 @@
+KMD
+00000000:             ; ; Program to print 'The Meadow Song'
+00000000:             ; ; Username: psyjaj
+00000000:             ; ; Name: James Jacobs
+00000000:             ; ; Student ID: 4244791
+00000000:             ; 
+00000000: EA00001D    ;         B main
+00000004:             ; 
+00000004: 00000004    ; verses  DEFW 4
+00000008: 20 6D 65 6E ; first   DEFB " men went to mow\n",0
+0000000C: 20 77 65 6E ; 
+00000010: 74 20 74 6F ; 
+00000014: 20 6D 6F 77 ; 
+00000018: 0A 00       ; 
+0000001A: 57 65 6E 74 ; second  DEFB "Went to mow a meadow\n",0
+0000001E: 20 74 6F 20 ; 
+00000022: 6D 6F 77 20 ; 
+00000026: 61 20 6D 65 ; 
+0000002A: 61 64 6F 77 ; 
+0000002E: 0A 00       ; 
+00000030: 20 6D 65 6E ; third   DEFB " men, ",0
+00000034: 2C 20 00    ; 
+00000037: 31 20 6D 61 ; fourth  DEFB "1 man and his dog, Spot\n",0
+0000003B: 6E 20 61 6E ; 
+0000003F: 64 20 68 69 ; 
+00000043: 73 20 64 6F ; 
+00000047: 67 2C 20 53 ; 
+0000004B: 70 6F 74 0A ; 
+0000004F: 00          ; 
+00000050: 57 65 6E 74 ; fifth   DEFB "Went to mow a meadow\n\n",0
+00000054: 20 74 6F 20 ; 
+00000058: 6D 6F 77 20 ; 
+0000005C: 61 20 6D 65 ; 
+00000060: 61 64 6F 77 ; 
+00000064: 0A 0A 00    ; 
+00000067: 20 6D 61 6E ; sixth   DEFB " man went to mow\n",0
+0000006B: 20 77 65 6E ; 
+0000006F: 74 20 74 6F ; 
+00000073: 20 6D 6F 77 ; 
+00000077: 0A 00       ; 
+00000079:             ; 
+0000007C:             ;         ALIGN
+0000007C:             ; 
+0000007C: E51F1080    ; main    LDR R1, verses          ;sets R1 to the value 4
+00000080: E51F2084    ;         LDR R2, verses          ;sets R2 to the value 4
+00000084: EAFFFFFF    ;         B then                  ;Branches to the part 'then'
+00000088:             ; 
+00000088: E1A00002    ; then    MOV R0, R2              ;Move, into the address R0, the value R2
+0000008C: EF000004    ;         SWI 4                   ;print the value in R0 (4)
+00000090: E3500001    ;         CMP R0, #1              ;compare the value in R0 with the value 1
+00000094: 0A000019    ;         BEQ oneman              ;branch to the part 'oneman' if the value in R0 is equal to 1
+00000098: E24F0098    ; return  ADR R0, first           
+0000009C: EF000003    ;         SWI 3                   ;print the line 'first'
+000000A0: E24F008E    ;         ADR R0, second
+000000A4: EF000003    ;         SWI 3                   ;print the line 'second'
+000000A8: E1A01002    ;         MOV R1, R2              ;move into the address, the value in the address R2
+000000AC:             ; 
+000000AC: E3510001    ; loop    CMP R1, #1              ;compare the value in the address R1 with the value 1
+000000B0: 0A00000A    ;         BEQ last                ;if R1 equals 1, branch to the part 'last'
+000000B4: E1A00001    ;         MOV R0, R1              ;move into the address, R0 the value in the address R1
+000000B8: EF000004    ;         SWI 4                   ;print the value in the address R0
+000000BC: E24F0094    ;         ADR R0, third
+000000C0: EF000003    ;         SWI 3                   ;print the line 'third'
+000000C4: E2411001    ;         SUB R1, R1, #1          ;into the address R1, put the value of R1 subtracted by 1
+000000C8:             ; 
+000000C8: EAFFFFF7    ;         B loop                  ;branch to the part 'loop'
+000000CC:             ; 
+000000CC: E24F009D    ; next    ADR R0, fourth          
+000000D0: EF000003    ;         SWI 3                   ;print the line 'fourth'
+000000D4: E24F008C    ;         ADR R0, fifth
+000000D8: EF000003    ;         SWI 3                   ;print the line 'fifth'
+000000DC: EAFFFFFA    ;         B next                  ;branch to the part 'next'
+000000E0:             ; 
+000000E0: E24F00B1    ; last    ADR R0, fourth          
+000000E4: EF000003    ;         SWI 3                   ;print the line 'fourth'
+000000E8: E24F00A0    ;         ADR R0, fifth
+000000EC: EF000003    ;         SWI 3                   ;print the line 'fifth'
+000000F0: E2422001    ;         SUB R2, R2, #1          ;into the address R2, put the value of R2 subtracted by 1
+000000F4: E3520000    ;         CMP R2, #0              ;compare the value in the address R2 with the value 0
+000000F8: 1AFFFFE2    ;         BNE then                ;if the value in R2 is not equal to 0, branch to the part 'then
+                      ; '
+000000FC: EA000007    ;         B end                   ;branch to the part 'end'
+00000100:             ; 
+00000100: E24F00A1    ; oneman  ADR R0, sixth
+00000104: EF000003    ;         SWI 3                   ;print the line 'sixth'
+00000108: E24F00F6    ;         ADR R0, second
+0000010C: EF000003    ;         SWI 3                   ;print the line 'second'
+00000110: E24F00E1    ;         ADR R0, fourth
+00000114: EF000003    ;         SWI 3                   ;print the line 'fourth'
+00000118: E24F00D0    ;         ADR R0, fifth
+0000011C: EF000003    ;         SWI 3                   ;print the line 'fifth'
+00000120:             ; 
+00000120: EF000002    ; end     SWI 2                   ;end
+00000124:             ;         
+00000124:             ; 
+00000124:             ; 
+
+Symbol Table: Labels
+: verses                            00000004  Local -- ARM
+: first                             00000008  Local -- ARM
+: second                            0000001A  Local -- ARM
+: third                             00000030  Local -- ARM
+: fourth                            00000037  Local -- ARM
+: fifth                             00000050  Local -- ARM
+: sixth                             00000067  Local -- ARM
+: main                              0000007C  Local -- ARM
+: then                              00000088  Local -- ARM
+: return                            00000098  Local -- ARM
+: loop                              000000AC  Local -- ARM
+: next                              000000CC  Local -- ARM
+: last                              000000E0  Local -- ARM
+: oneman                            00000100  Local -- ARM
+: end                               00000120  Local -- ARM

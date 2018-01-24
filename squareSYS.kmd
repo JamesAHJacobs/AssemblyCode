@@ -1,0 +1,177 @@
+KMD
+00000000:             ; ; Program to print Mandelbrot art
+00000000:             ; ; Username: psyjaj
+00000000:             ; ; Name: James Jacobs
+00000000:             ; ; Student ID: 4244791
+00000000:             ; 
+00000000: EA000022    ;         B main
+00000004:             ; 
+00000004: 2A 00       ; star    DEFB "*",0
+00000006: 0A 00       ; NL      DEFB "\n",0
+00000008: 50 6C 65 61 ; pwidth  DEFB "Please enter the width for your rectangle: ",0
+0000000C: 73 65 20 65 ; 
+00000010: 6E 74 65 72 ; 
+00000014: 20 74 68 65 ; 
+00000018: 20 77 69 64 ; 
+0000001C: 74 68 20 66 ; 
+00000020: 6F 72 20 79 ; 
+00000024: 6F 75 72 20 ; 
+00000028: 72 65 63 74 ; 
+0000002C: 61 6E 67 6C ; 
+00000030: 65 3A 20 00 ; 
+00000034: 0A 50 6C 65 ; pheight DEFB "\nPlease enter the height for your rectangle: ",0
+00000038: 61 73 65 20 ; 
+0000003C: 65 6E 74 65 ; 
+00000040: 72 20 74 68 ; 
+00000044: 65 20 68 65 ; 
+00000048: 69 67 68 74 ; 
+0000004C: 20 66 6F 72 ; 
+00000050: 20 79 6F 75 ; 
+00000054: 72 20 72 65 ; 
+00000058: 63 74 61 6E ; 
+0000005C: 67 6C 65 3A ; 
+00000060: 20 00       ; 
+00000062: 57 72 6F 6E ; error   DEFB "Wrong",0
+00000066: 67 00       ; 
+00000068: 0A 50 6C 65 ; errors1 DEFB "\nPlease enter a value greater than 1\n",0
+0000006C: 61 73 65 20 ; 
+00000070: 65 6E 74 65 ; 
+00000074: 72 20 61 20 ; 
+00000078: 76 61 6C 75 ; 
+0000007C: 65 20 67 72 ; 
+00000080: 65 61 74 65 ; 
+00000084: 72 20 74 68 ; 
+00000088: 61 6E 20 31 ; 
+0000008C: 0A 00       ; 
+0000008E:             ;         
+00000090:             ;         ALIGN
+00000090:             ; 
+00000090: E3A01000    ; main    MOV     R1, #0
+00000094: E3A02000    ;         MOV     R2, #0
+00000098: E3A05000    ;         MOV     R5, #0
+0000009C: E3A06000    ;         MOV     R6, #0
+000000A0: E3A0A00A    ;         MOV     R10, #10
+000000A4:             ; 
+000000A4: E24F00A4    ; ph      ADR     R0, pwidth
+000000A8: EF000003    ;         SWI     3
+000000AC:             ; 
+000000AC: E2855001    ; input   ADD     R5, R5, #1
+000000B0: EF000001    ;         SWI     1
+000000B4: E350000A    ;         CMP     R0, #10
+000000B8: 0A000009    ;         BEQ handle
+000000BC: E350002F    ;         CMP     R0, #47
+000000C0: 9A000033    ;         BLS errors
+000000C4: E350003A    ;         CMP     R0, #58
+000000C8: 2A000031    ;         BHS errors
+000000CC: E2400030    ;         SUB     R0, R0, #48
+000000D0: EF000004    ;         SWI     4
+000000D4: E0210A91    ;         MLA     R1, R1, R10, R0
+000000D8: E3510050    ;         CMP     R1, #80
+000000DC: CA00002C    ;         BGT     errors
+000000E0: EAFFFFF1    ;         B input
+000000E4:             ; 
+000000E4: E3550001    ; handle  CMP R5, #1
+000000E8: 0A000030    ;         BEQ error1
+000000EC: 1A000002    ;         BNE pw
+000000F0:             ; 
+000000F0: E3560001    ; handle2 CMP R6, #1
+000000F4: 0A000033    ;         BEQ error2
+000000F8: 1A00000F    ;         BNE drawr
+000000FC:             ; 
+000000FC: E24F00D0    ; pw      ADR     R0, pheight
+00000100: EF000003    ;         SWI 3
+00000104:             ; 
+00000104: E2866001    ; input2  ADD     R6, R6, #1
+00000108: EF000001    ;         SWI     1
+0000010C: E350000A    ;         CMP     R0, #10
+00000110: 0AFFFFF6    ;         BEQ handle2
+00000114: E350002F    ;         CMP     R0, #47
+00000118: 9A00001D    ;         BLS errors
+0000011C: E350003A    ;         CMP     R0, #58
+00000120: 2A00001B    ;         BHS errors
+00000124: E2400030    ;         SUB R0, R0, #48
+00000128: EF000004    ;         SWI 4
+0000012C: E0220A92    ;         MLA     R2, R2, R10, R0
+00000130: E3520050    ;         CMP     R2, #80
+00000134: CA000016    ;         BGT     errors
+00000138: EAFFFFF1    ;         B input2
+0000013C:             ; 
+0000013C:             ; drawr   
+0000013C: E24F003E    ;         ADRL    R0, NL
+00000140: E2400C01    ; 
+00000144: EF000003    ;         SWI     3
+00000148: E3A04000    ;         MOV     R4, #0
+0000014C: EA00000A    ;         B loop1
+00000150:             ; 
+00000150:             ; across  
+00000150: E3A03000    ;         MOV     R3, #0
+00000154: EA000002    ;         B loop2
+00000158:             ; 
+00000158:             ; down    
+00000158: E24F0F57    ;         ADRL    R0, star
+0000015C: EF000003    ;         SWI     3
+00000160: E2833001    ;         ADD     R3, R3, #1
+00000164:             ; 
+00000164:             ; loop2   
+00000164: E1530001    ;         CMP     R3, R1
+00000168: 1AFFFFFA    ;         BNE down
+0000016C: E24F006E    ;         ADRL    R0, NL
+00000170: E2400C01    ; 
+00000174: EF000003    ;         SWI     3
+00000178: E2844001    ;         ADD     R4, R4, #1
+0000017C:             ; 
+0000017C: E1520004    ; loop1   CMP     R2, R4
+00000180: 1AFFFFF2    ;         BNE across
+00000184: E24F0086    ;         ADRL    R0, NL
+00000188: E2400C01    ; 
+0000018C: EF000003    ;         SWI     3
+00000190: EAFFFFBE    ;         B main
+00000194:             ; 
+00000194: E24F0096    ; errors  ADRL    R0, NL
+00000198: E2400C01    ; 
+0000019C: EF000003    ;         SWI     3
+000001A0: E24F0046    ;         ADRL    R0, error
+000001A4: E2400C01    ; 
+000001A8: EF000003    ;         SWI     3
+000001AC: EA00000B    ;         B end
+000001B0:             ; 
+000001B0: E24F00B2    ; error1  ADRL    R0, NL
+000001B4: E2400C01    ; 
+000001B8: EF000003    ;         SWI     3
+000001BC: E24F0F57    ;         ADRL    R0, errors1
+000001C0: EF000003    ;         SWI 3
+000001C4: EAFFFFB1    ;         B main
+000001C8:             ; 
+000001C8: E24F00CA    ; error2  ADRL    R0, NL
+000001CC: E2400C01    ; 
+000001D0: EF000003    ;         SWI     3
+000001D4: E24F0F5D    ;         ADRL    R0, errors1
+000001D8: EF000003    ;         SWI 3
+000001DC: EAFFFFC6    ;         B pw
+000001E0:             ; 
+000001E0: EF000002    ; end     SWI 2
+000001E4:             ; 
+
+Symbol Table: Labels
+: star                              00000004  Local -- ARM
+: NL                                00000006  Local -- ARM
+: pwidth                            00000008  Local -- ARM
+: pheight                           00000034  Local -- ARM
+: error                             00000062  Local -- ARM
+: errors1                           00000068  Local -- ARM
+: main                              00000090  Local -- ARM
+: ph                                000000A4  Local -- ARM
+: input                             000000AC  Local -- ARM
+: handle                            000000E4  Local -- ARM
+: handle2                           000000F0  Local -- ARM
+: pw                                000000FC  Local -- ARM
+: input2                            00000104  Local -- ARM
+: drawr                             0000013C  Local -- ARM
+: across                            00000150  Local -- ARM
+: down                              00000158  Local -- ARM
+: loop2                             00000164  Local -- ARM
+: loop1                             0000017C  Local -- ARM
+: errors                            00000194  Local -- ARM
+: error1                            000001B0  Local -- ARM
+: error2                            000001C8  Local -- ARM
+: end                               000001E0  Local -- ARM

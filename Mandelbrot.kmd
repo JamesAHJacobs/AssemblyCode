@@ -1,0 +1,98 @@
+KMD
+00000000:             ; ; Program to print Mandelbrot art
+00000000:             ; ; Username: psyjaj
+00000000:             ; ; Name: James Jacobs
+00000000:             ; ; Student ID: 4244791
+00000000:             ; 
+00000000: EA000005    ;         B main
+00000004:             ; 
+00000004: FFFFFE70    ; xstart  DEFW    -400
+00000008: 00000190    ; xend    DEFW    400
+0000000C: FFFFFEF7    ; ystart  DEFW    -265
+00000010: 00000109    ; yend    DEFW    265
+00000014: 2A 00       ; star    DEFB    "*",0
+00000016: 20 00       ; space   DEFB    " ",0
+00000018: 0A 00       ; NL      DEFB    "\n",0
+0000001A:             ; 
+0000001A:             ; 
+0000001C:             ;         ALIGN
+0000001C:             ; 
+0000001C: E3A06000    ; main    MOV R6, #0
+00000020: E3A07000    ;         MOV R7, #0
+00000024: E3A08000    ;         MOV R8, #0
+00000028: E24F0018    ;         ADR R0, NL
+0000002C: EF000003    ;         SWI 3
+00000030: E51F802C    ;         LDR R8, ystart
+00000034: EA000025    ;         B wc2
+00000038:             ; 
+00000038: E51F703C    ; wl2     LDR R7, xstart
+0000003C: EA00001D    ;         B wc1
+00000040:             ; 
+00000040: E3A01A01    ; wl1     MOV R1, #4096
+00000044: E3A02000    ;         MOV R2, #0
+00000048: E3A03000    ;         MOV R3, #0
+0000004C: E3A04000    ;         MOV R4, #0
+00000050: E3A05000    ;         MOV R5, #0
+00000054:             ; 
+00000054: E0426005    ; loopdo  SUB R6, R2, R5
+00000058: E0866007    ;         ADD R6, R6, R7
+0000005C: E0040394    ;         MUL R4, R4, R3
+00000060: E1A04084    ;         MOV R4, R4  LSL #1
+00000064: E1A04444    ;         MOV R4, R4, ASR #8
+00000068: E0844008    ;         ADD R4, R4, R8
+0000006C: E1A03006    ;         MOV R3, R6
+00000070: E0020393    ;         MUL R2, R3, R3
+00000074: E1A02442    ;         MOV R2, R2  ASR #8
+00000078: E0050494    ;         MUL R5, R4, R4
+0000007C: E1A05445    ;         MOV R5, R5 ASR #8
+00000080: E2411001    ;         SUB R1, R1, #1
+00000084: E0829005    ;         ADD R9, R2, R5
+00000088: E3590B01    ;         CMP R9, #1024
+0000008C: 5A000001    ;         BPL loopit
+00000090: E3510000    ;         CMP R1, #0
+00000094: 1AFFFFEE    ;         BNE loopdo
+00000098:             ; 
+00000098: E3510000    ; loopit  CMP R1, #0
+0000009C: 1A000002    ;         BNE Pstar
+000000A0: E24F0092    ;         ADR R0, space
+000000A4: EF000003    ;         SWI 3
+000000A8: EA000001    ;         B next
+000000AC:             ; 
+000000AC: E24F00A0    ; Pstar   ADR R0, star
+000000B0: EF000003    ;         SWI 3
+000000B4:             ; 
+000000B4: E287700A    ; next    ADD R7, R7, #10
+000000B8:             ; 
+000000B8: E51F90B8    ; wc1     LDR R9, xend
+000000BC: E1570009    ;         CMP R7, R9
+000000C0: DAFFFFDE    ;         BLE wl1
+000000C4: E24F00B4    ;         ADR R0, NL
+000000C8: EF000003    ;         SWI 3
+000000CC: E288800A    ;         ADD R8, R8, #10
+000000D0:             ; 
+000000D0: E51F90C8    ; wc2     LDR R9, yend
+000000D4: E1580009    ;         CMP R8, R9
+000000D8: DAFFFFD6    ;         BLE wl2
+000000DC: E24F00CC    ;         ADR R0, NL
+000000E0: EF000003    ;         SWI 3
+000000E4: EF000002    ;         SWI 2
+000000E8:             ; 
+000000E8:             ; 
+
+Symbol Table: Labels
+: xstart                            00000004  Local -- ARM
+: xend                              00000008  Local -- ARM
+: ystart                            0000000C  Local -- ARM
+: yend                              00000010  Local -- ARM
+: star                              00000014  Local -- ARM
+: space                             00000016  Local -- ARM
+: NL                                00000018  Local -- ARM
+: main                              0000001C  Local -- ARM
+: wl2                               00000038  Local -- ARM
+: wl1                               00000040  Local -- ARM
+: loopdo                            00000054  Local -- ARM
+: loopit                            00000098  Local -- ARM
+: Pstar                             000000AC  Local -- ARM
+: next                              000000B4  Local -- ARM
+: wc1                               000000B8  Local -- ARM
+: wc2                               000000D0  Local -- ARM
